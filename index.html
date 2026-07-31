@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="components.css" />
     <link rel="stylesheet" href="sourcing.css" />
     <link rel="stylesheet" href="sourcing-ops.css" />
+    <link rel="stylesheet" href="operator-stack.css" />
   </head>
   <body>
     <div class="announcement">Free shipping on orders over €90 <span>•</span> Made for the final impression</div>
     <header class="site-header">
       <a href="#top" class="wordmark" aria-label="Good Ending home">good <i>ending</i></a>
       <nav aria-label="Main navigation">
-        <a href="#shop">Shop</a><a href="#source-lab">Source lab</a><a href="#why">Our approach</a><a href="#notes">Notes</a>
+        <a href="#shop">Shop</a><a href="#source-lab">Source lab</a><a href="#operator-stack">Our stack</a><a href="#why">Our approach</a>
       </nav>
       <button class="bag-button" id="bagButton" aria-label="Open shopping bag">Bag <span id="bagCount">0</span></button>
     </header>
@@ -57,6 +58,19 @@
       <section class="source-lab" id="source-lab">
         <div class="source-intro"><p class="eyebrow">The source lab</p><h2>Know <em>why</em><br />it belongs here.</h2><p>Every product starts as a brief, not a blind buy. Compare the suppliers, request samples, and keep the reasoning with the product.</p><div class="source-legend"><span><i class="dot good"></i> ready to sample</span><span><i class="dot warm"></i> researching</span></div></div>
         <div class="source-workbench"><div class="source-list" id="sourceList"></div><div class="source-detail" id="sourceDetail"></div></div>
+      </section>
+
+      <section class="operator-stack" id="operator-stack">
+        <div class="stack-heading"><p class="eyebrow">The operator stack</p><h2>A sharper way to<br /><em>find, prove, sell.</em></h2><p>Not a pile of apps. A sequence of evidence: discover the demand, validate the gap, source safely, fulfil reliably, then learn from the numbers.</p></div>
+        <div class="stack-flow" aria-label="Product sourcing and commerce workflow">
+          <article class="stack-card research"><span class="stack-number">01</span><p class="stack-type">Demand signal</p><h3>Dropship.io</h3><p>Find products moving now, especially where the customer is still waiting too long.</p><small>Research prompt</small></article>
+          <article class="stack-card research"><span class="stack-number">02</span><p class="stack-type">Competitor proof</p><h3>PPSPY</h3><p>Track real stores, prices and estimated product velocity before chasing an idea.</p><small>Research prompt</small></article>
+          <article class="stack-card source"><span class="stack-number">03</span><p class="stack-type">Supplier decision</p><h3>AutoDS</h3><p>Source alternatives, import only as a draft, then fulfil and monitor stock once approved.</p><small>Supplier prompt · cash gate</small></article>
+          <article class="stack-card store"><span class="stack-number">04</span><p class="stack-type">Store operation</p><h3>Shopify</h3><p>The source of truth for catalog, checkout, policies, orders and customer experience.</p><small>Shopify CLI · AI Toolkit</small></article>
+          <article class="stack-card agents"><span class="stack-number">05</span><p class="stack-type">Always-on discovery</p><h3>Shopping agents</h3><p>Prepare verified product data for agentic discovery and eligible direct checkout.</p><small>Agentic commerce prompt</small></article>
+          <article class="stack-card learn"><span class="stack-number">06</span><p class="stack-type">Keep or kill</p><h3>Growth audit</h3><p>Use actual funnel, margin and return data to fix, scale or pause a product.</p><small>Audit prompt</small></article>
+        </div>
+        <p class="stack-note">Every stage has an approval gate. No unverified trend, supplier quote, or product import becomes a live promise to the customer.</p>
       </section>
 
       <section class="custom">
