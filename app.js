@@ -18,6 +18,14 @@ const sourcingData = {
   'barcode-scanner': { state: 'Researching', trend: 'Evergreen', brief: 'A cordless scanner that works hard and looks at home on the counter.', criteria: ['Bluetooth + USB modes', '1-year warranty minimum', 'Drop-test rating'], suppliers: [{name:'POS equipment distributor', cost:'Quote needed', note:'Quick route to tested units'}, {name:'Hardware manufacturer', cost:'Quote needed', note:'Best margins at higher volume'}] }
 };
 let selectedSource = 'numbers-roll';
+const cashModels = {
+  'numbers-roll': {cost:6, price:18, pack:1.1, cac:2.5, route:'AutoDS sourcing request'},
+  'loyalty-card': {cost:8, price:24, pack:1.1, cac:3.5, route:'AutoDS sourcing request'},
+  mint: {cost:5, price:16, pack:1.1, cac:2.25, route:'AutoDS sourcing request'},
+  sweets: {cost:5, price:16, pack:1.1, cac:2.25, route:'AutoDS sourcing request'},
+  'cash-registry': {cost:132, price:289, pack:5, cac:35, route:'AutoDS Marketplace draft'},
+  'barcode-scanner': {cost:31, price:74, pack:2.5, cac:9, route:'AutoDS Marketplace draft'}
+};
 function renderProducts(){
   products.innerHTML = productData.filter(p => activeFilter === 'all' || p.category === activeFilter).map(p => `<article class="product"><div class="product-img"><div class="product-graphic">${p.graphic}</div></div><div class="product-info"><div><h3>${p.name}</h3><p>${p.note}</p></div><div><p>€${p.price}.00</p><button class="add" data-id="${p.id}">Add +</button></div></div></article>`).join('');
   document.querySelectorAll('.add').forEach(button => button.addEventListener('click', () => addToCart(button.dataset.id)));
@@ -39,10 +47,12 @@ renderProducts();
 function renderSourceLab(){
   const productById = Object.fromEntries(productData.map(p => [p.id, p]));
   document.querySelector('#sourceList').innerHTML = productData.map(p => { const s=sourcingData[p.id]; return `<button class="source-row ${p.id===selectedSource?'selected':''}" data-source="${p.id}"><span class="source-row-status ${s.state==='Ready to sample'?'sample':''}"></span><span>${p.name}</span><small>${s.state}</small></button>` }).join('');
-  const p=productById[selectedSource], s=sourcingData[selectedSource];
-  document.querySelector('#sourceDetail').innerHTML = `<div class="detail-top"><div><p class="eyebrow">Sourcing brief</p><h3>${p.name}</h3></div><span class="trend">${s.trend} demand</span></div><p class="brief">${s.brief}</p><div class="detail-grid"><div><p class="label">Non-negotiables</p><ul>${s.criteria.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><p class="label">Supplier shortlist</p>${s.suppliers.map((x,i)=>`<div class="supplier"><span>0${i+1}</span><div><strong>${x.name}</strong><p>${x.note}</p></div><b>${x.cost}</b></div>`).join('')}</div></div><div class="source-actions"><button class="button button-dark" id="requestQuotes">Request quotes <span>↗</span></button><button class="save-brief" id="saveBrief">Save sourcing brief</button></div>`;
+  const p=productById[selectedSource], s=sourcingData[selectedSource], m=cashModels[selectedSource];
+  const fee=Number((m.price*.03+.3).toFixed(2)), contribution=Number((m.price-m.cost-m.pack-m.cac-fee).toFixed(2)), margin=Math.round(contribution/m.price*100);
+  document.querySelector('#sourceDetail').innerHTML = `<div class="detail-top"><div><p class="eyebrow">Sourcing brief</p><h3>${p.name}</h3></div><span class="trend">${s.trend} demand</span></div><p class="brief">${s.brief}</p><div class="detail-grid"><div><p class="label">Non-negotiables</p><ul>${s.criteria.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><p class="label">Supplier shortlist</p>${s.suppliers.map((x,i)=>`<div class="supplier"><span>0${i+1}</span><div><strong>${x.name}</strong><p>${x.note}</p></div><b>${x.cost}</b></div>`).join('')}</div></div><section class="ops-gate"><div class="ops-top"><div><p class="label">Dropship.io → AutoDS</p><strong>Signal, then execution.</strong><p>Use a delivery-gap trend signal to find the opportunity. Import only when the unit cash flow passes.</p></div><b class="cash-status ${contribution>0?'pass':'hold'}">${contribution>0?'Cash positive':'Hold'}</b></div><div class="money-inputs"><label>Sell price <input data-model="price" type="number" value="${m.price}" min="0" /></label><label>Landed cost <input data-model="cost" type="number" value="${m.cost}" min="0" /></label><label>Packaging <input data-model="pack" type="number" value="${m.pack}" min="0" step=".1" /></label><label>Acquisition <input data-model="cac" type="number" value="${m.cac}" min="0" step=".5" /></label></div><div class="money-result"><strong>€${contribution.toFixed(2)} contribution <i>(${margin}% of sale)</i></strong><span>includes 3% + €0.30 payment fee</span></div><p class="route">AutoDS route: <b>${m.route}</b> · Import as draft only</p></section><div class="source-actions"><button class="button button-dark" id="requestQuotes">Start AutoDS handoff <span>↗</span></button><button class="save-brief" id="saveBrief">Save sourcing brief</button></div>`;
   document.querySelectorAll('[data-source]').forEach(el=>el.addEventListener('click',()=>{selectedSource=el.dataset.source;renderSourceLab()}));
-  document.querySelector('#requestQuotes').addEventListener('click',()=>alert(`Next step: add your market, target quantity and landed-cost target for ${p.name}, then we can invite verified suppliers to quote.`));
+  document.querySelectorAll('[data-model]').forEach(input=>input.addEventListener('input',()=>{m[input.dataset.model]=Number(input.value)||0;renderSourceLab()}));
+  document.querySelector('#requestQuotes').addEventListener('click',()=>alert(`AutoDS handoff ready for ${p.name}. Connect AutoDS, then import it as a draft only after a supplier quote and this cash-flow gate are approved.`));
   document.querySelector('#saveBrief').addEventListener('click',e=>{e.target.textContent='Brief saved ✓';});
 }
 renderSourceLab();
