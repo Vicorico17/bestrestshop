@@ -1,12 +1,10 @@
 const productData = [
-  { id: 'roll', category: 'paper', name: 'The number roll', note: '100 custom table numbers', price: 18, graphic: '<div class="roll"></div>' },
-  { id: 'card', category: 'paper', name: 'Return card set', note: '100 loyalty cards, uncoated', price: 24, graphic: '<div class="card-stack">good ending</div>' },
-  { id: 'mint', category: 'treats', name: 'Good night mints', note: 'A jar of 80 peppermint sweets', price: 16, graphic: '<div class="mints"><span class="mint">mint</span><span class="mint">mint</span><span class="mint">mint</span></div>' },
-  { id: 'pinkroll', category: 'paper', name: 'The pink number roll', note: '100 rose-coloured numbers', price: 19, graphic: '<div class="roll" style="filter:hue-rotate(315deg)"></div>' },
-  { id: 'thankyou', category: 'paper', name: 'Thank you cards', note: '100 small notes of gratitude', price: 21, graphic: '<div class="card-stack">with thanks</div>' },
-  { id: 'lemon', category: 'treats', name: 'Lemon drops', note: 'A jar of 80 bright little sweets', price: 16, graphic: '<div class="mints" style="filter:hue-rotate(45deg)"><span class="mint">sweet</span><span class="mint">sweet</span><span class="mint">sweet</span></div>' },
-  { id: 'till', category: 'counter', name: 'The big sound till', note: 'A satisfyingly solid cash machine', price: 289, graphic: '<div class="till"><div class="till-screen">€ 24.00</div><div class="till-keys"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>' },
-  { id: 'scanner', category: 'counter', name: 'The scan wand', note: 'Cordless barcode scanner', price: 74, graphic: '<div class="scanner"><div class="scanner-head"><span></span></div><div class="scanner-handle"></div></div>' }
+  { id: 'numbers-roll', category: 'paper', name: 'Numbers roll', note: '100 custom table numbers', price: 18, graphic: '<div class="roll"></div>' },
+  { id: 'loyalty-card', category: 'paper', name: 'Loyalty card', note: '100 loyalty cards, uncoated', price: 24, graphic: '<div class="card-stack">good ending</div>' },
+  { id: 'mint', category: 'treats', name: 'Mint', note: 'A jar of 80 peppermint mints', price: 16, graphic: '<div class="mints"><span class="mint">mint</span><span class="mint">mint</span><span class="mint">mint</span></div>' },
+  { id: 'sweets', category: 'treats', name: 'Sweets', note: 'A jar of 80 bright little sweets', price: 16, graphic: '<div class="mints" style="filter:hue-rotate(45deg)"><span class="mint">sweet</span><span class="mint">sweet</span><span class="mint">sweet</span></div>' },
+  { id: 'cash-registry', category: 'counter', name: 'Cash registry', note: 'A satisfyingly solid cash machine', price: 289, graphic: '<div class="till"><div class="till-screen">€ 24.00</div><div class="till-keys"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>' },
+  { id: 'barcode-scanner', category: 'counter', name: 'Barcode scanner', note: 'Cordless barcode scanner', price: 74, graphic: '<div class="scanner"><div class="scanner-head"><span></span></div><div class="scanner-handle"></div></div>' }
 ];
 const products = document.querySelector('#products');
 const cart = [];
