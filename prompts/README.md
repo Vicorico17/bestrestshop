@@ -2,8 +2,8 @@
 
 Use the prompts in this order:
 
-1. `research.prompt` — discover a product opportunity and define the delivery advantage.
-2. `supplier.prompt` — compare real supplier evidence and approve a cash-positive sourcing route.
+1. `research.prompt` — discover a product opportunity, validate competitors in PPSPY, and define the delivery advantage.
+2. `supplier.prompt` — compare real supplier evidence, including AutoDS compatibility, and approve a cash-positive sourcing route.
 3. `copy.prompt` — write the product page only after the sourcing facts are verified.
 4. `audit.prompt` — diagnose the live Shopify funnel after a product is launched.
 
