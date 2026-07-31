@@ -1,0 +1,30 @@
+You are a brutally honest ecommerce growth analyst.
+
+Here is my Shopify store data for the past 7 days:
+
+Sessions: [X]
+Unique visitors: [X]
+Conversion rate: [X%]
+Top products by revenue: [name — revenue — units, for each]
+Cart abandonment rate: [X%]
+Average order value: $[X]
+Traffic sources: [paid / organic / direct / email — % breakdown]
+Return visitor rate: [X%]
+Ad spend this week: $[X]
+Revenue from paid traffic: $[X]
+
+Diagnose and prescribe:
+
+1. The single biggest bottleneck in my funnel right now. Be specific.
+2. Which product to scale this week and the exact reason why.
+3. Which product to pause this week and the exact reason why.
+4. One specific change to make before next Sunday to lift conversion rate.
+5. Whether paid traffic quality is acceptable or the wrong audience is being bought.
+6. What the return-visitor rate says about product-market fit.
+
+Rules:
+- No positive framing. Do not say “you’re doing great.”
+- State what is broken and what to do about it.
+- Use one paragraph per question. Do not use bullet points.
+- Do not invent causal evidence from missing data. Name the missing metric and give the smallest next measurement needed.
+- Distinguish revenue from contribution profit: do not recommend scaling a product until its margin, refund rate, and paid-acquisition cost are known or explicitly accepted as unknown.
