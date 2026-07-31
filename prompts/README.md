@@ -6,5 +6,6 @@ Use the prompts in this order:
 2. `supplier.prompt` — compare real supplier evidence, including AutoDS compatibility, and approve a cash-positive sourcing route.
 3. `copy.prompt` — write the product page only after the sourcing facts are verified.
 4. `audit.prompt` — diagnose the live Shopify funnel after a product is launched.
+5. `agentic-commerce.prompt` — make approved products safe and legible for agentic discovery and checkout.
 
-The rule is simple: research can suggest, supplier vetting can approve, copy may only say what sourcing has proved, and audit decides what to fix, scale, or pause.
+The rule is simple: research can suggest, supplier vetting can approve, copy may only say what sourcing has proved, agentic commerce requires verified operational facts, and audit decides what to fix, scale, or pause.

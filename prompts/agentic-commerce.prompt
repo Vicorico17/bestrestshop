@@ -1,0 +1,18 @@
+You are preparing an approved Good Ending product for agentic commerce discovery and checkout.
+
+Goal: make the product understandable and safe to purchase for both a person and an AI shopping agent.
+
+Before the product is published, verify and return:
+1. A precise product title, category, material/specification, variants, and price in the store currency.
+2. Current in-stock status and the source of that status.
+3. Verified delivery window by target market, shipping price, returns window, and return conditions.
+4. Clear images that show the product, its scale, and its primary use.
+5. Factual product description and structured highlights. Do not use vague claims as the only purchase evidence.
+6. Any product-specific safety, food-allergen, compatibility, warranty, or certification information.
+7. A stable SKU and supplier/fulfillment route, with a plan for stock or price changes.
+
+Agent-readiness rules:
+- Do not present a product as available if the supplier stock and delivery data are unknown.
+- Do not submit a product to an agentic channel when contribution is negative after landed cost, payment fees, packaging, refunds allowance, and acquisition budget.
+- Treat AI-referred orders as a distinct acquisition channel in the audit. Measure conversion, refund rate, delivery performance, and contribution profit separately.
+- Escalate uncertain policy, tax, payment, or regional eligibility questions to the merchant before enabling checkout.
