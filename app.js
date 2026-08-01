@@ -9,6 +9,17 @@ const productData = [
 const products = document.querySelector('#products');
 const cart = [];
 let activeFilter = 'all';
+const walkthroughSteps = [
+  {tool:'Brief', title:'Start with a product question', body:'Write the pain point before looking for a product. If you cannot name who is frustrated, when it happens, and what better means, the idea is not ready for research.', fields:[['idea','What pain are we solving?','e.g. restaurant queues feel anonymous'],['market','First target market','e.g. UK independent restaurants']], action:'Save the brief'},
+  {tool:'Dropship.io', title:'Find a demand signal', body:'Look for a specific product with a recurring use case and a delivery gap. Record the evidence, the date checked, and why the customer buys now.', checklist:['Demand evidence recorded','Delivery gap named','Target customer is specific'], action:'Mark research checked'},
+  {tool:'PPSPY', title:'Check competitor momentum', body:'Track 3–5 Shopify stores. Compare product pricing, store activity, estimated product velocity, and fulfillment promises. Treat estimated sales as directional.', checklist:['3 competitor stores logged','Price and positioning compared','PPSPY estimates labeled directional'], action:'Mark competitor check'},
+  {tool:'Meta Ad Library + Winning Hunter', title:'Find the creative that is earning attention', body:'Look for active ads, hooks, formats, offers, ad-spend consistency, and the first three seconds. Borrow the insight, never the creative or claim.', checklist:['Active ads reviewed','Hook and offer captured','A distinct angle written'], action:'Mark ad intelligence checked'},
+  {tool:'Supplier prompt', title:'Vet the source', body:'Check product match, sample, MOQ, landed cost, delivery, returns, stock, reviews, and documentation. Label every number quoted, verified, estimated, or unknown.', checklist:['Supplier evidence captured','Critical reviews checked','Shipping window verified'], action:'Mark supplier vetted'},
+  {tool:'AutoDS', title:'Run the cash-flow gate', body:'Import as a draft only after the contribution stays positive after landed cost, payment fees, packaging, refunds allowance, and acquisition budget.', fields:[['sellPrice','Target selling price','e.g. 59'],['landedCost','Landed cost','e.g. 18'],['acquisition','Acquisition budget','e.g. 12']], action:'Evaluate cash flow'},
+  {tool:'Atlas + Shopify', title:'Build and publish the store page', body:'Use verified sourcing facts to create the page, offer, images, bundles, and upsells. Shopify remains the source of truth for catalog, checkout, policies, and orders.', checklist:['Copy uses verified facts','Delivery and returns are clear','Product is still a draft until approved'], action:'Mark page ready'},
+  {tool:'Agentic commerce + audit', title:'Launch, measure, decide', body:'Prepare structured product data for shopping agents, then audit the funnel weekly. Scale contribution, not vanity metrics. Pause anything without a path to profit.', checklist:['Agent-readable facts complete','7-day audit fields ready','Scale / pause rule written'], action:'Complete walkthrough'}
+];
+let walkthroughIndex=0, walkthroughDone=[];
 const sourcingData = {
   'numbers-roll': { state: 'Ready to sample', trend: 'Evergreen', brief: 'Branded, tactile queue numbers for busy restaurant service.', criteria: ['Custom print under 250 MOQ', 'Thermal or uncoated stock', 'EU delivery under 10 days'], suppliers: [{name:'Print specialist', cost:'Quote needed', note:'Best for custom perforation'}, {name:'Hospitality printer', cost:'Quote needed', note:'Strong small-batch option'}] },
   'loyalty-card': { state: 'Ready to sample', trend: 'Growing', brief: 'A wallet-worthy reminder to return, printed with restraint.', criteria: ['Uncoated 350gsm card', 'Foil or letterpress option', 'Plastic-free'], suppliers: [{name:'Fine paper printer', cost:'Quote needed', note:'Best finish potential'}, {name:'Short-run printer', cost:'Quote needed', note:'Fast validation samples'}] },
@@ -43,6 +54,19 @@ document.querySelector('#bagButton').addEventListener('click',()=>{document.quer
 document.querySelector('#closeCart').addEventListener('click',closeCart); document.querySelector('#scrim').addEventListener('click',closeCart);
 document.querySelector('.checkout').addEventListener('click',()=>alert('Thanks — checkout is ready for your payment provider.'));
 renderProducts();
+
+function renderWalkthrough(){
+  const s=walkthroughSteps[walkthroughIndex], pct=Math.round(walkthroughIndex/(walkthroughSteps.length-1)*100);
+  document.querySelector('#stepCount').textContent=`Step ${walkthroughIndex+1} of ${walkthroughSteps.length}`; document.querySelector('#progressPercent').textContent=`${pct}%`; document.querySelector('#progressBar').style.width=`${pct}%`;
+  document.querySelector('#stepNav').innerHTML=walkthroughSteps.map((x,i)=>`<button class="step-dot ${i===walkthroughIndex?'active':''} ${walkthroughDone.includes(i)?'done':''}" data-step="${i}" aria-label="Go to step ${i+1}">${String(i+1).padStart(2,'0')}</button>`).join('');
+  const fields=s.fields?.map(([id,label,placeholder])=>`<label class="walk-field">${label}<input id="${id}" placeholder="${placeholder}" /></label>`).join('')||'';
+  const checks=s.checklist?.map((x,i)=>`<label class="walk-check"><input type="checkbox" data-check="${i}" /> <span>${x}</span></label>`).join('')||'';
+  document.querySelector('#walkthroughCard').innerHTML=`<div class="walk-card-top"><span class="walk-tool">${s.tool}</span><span class="walk-state">${walkthroughDone.includes(walkthroughIndex)?'Complete':'Working step'}</span></div><h3>${s.title}</h3><p class="walk-body">${s.body}</p>${fields?`<div class="walk-fields">${fields}</div>`:''}${checks?`<div class="walk-checks">${checks}</div>`:''}<div class="walk-actions"><button class="button button-dark" id="completeStep">${s.action} <span>↗</span></button>${walkthroughIndex>0?'<button class="walk-back" id="prevStep">Back</button>':''}</div>`;
+  document.querySelectorAll('[data-step]').forEach(btn=>btn.addEventListener('click',()=>{walkthroughIndex=Number(btn.dataset.step);renderWalkthrough()}));
+  document.querySelector('#completeStep').addEventListener('click',()=>{if(s.fields){const required=[...document.querySelectorAll('.walk-field input')];if(required.some(x=>!x.value.trim())){required.find(x=>!x.value.trim()).focus();return;}}walkthroughDone=[...new Set([...walkthroughDone,walkthroughIndex])];if(walkthroughIndex<walkthroughSteps.length-1)walkthroughIndex++;renderWalkthrough();});
+  const back=document.querySelector('#prevStep');if(back)back.addEventListener('click',()=>{walkthroughIndex--;renderWalkthrough()});
+}
+renderWalkthrough();
 
 function renderSourceLab(){
   const productById = Object.fromEntries(productData.map(p => [p.id, p]));
