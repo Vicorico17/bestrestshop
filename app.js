@@ -123,6 +123,30 @@ function generateStorefront(event){
     event.target.textContent = 'Copied ✓';
   });
 }
+let wizardStep = 1;
+const wizardSteps = [...document.querySelectorAll('[data-wizard-step]')];
+function updateWizard(){
+  wizardSteps.forEach(step => step.classList.toggle('active', Number(step.dataset.wizardStep) === wizardStep));
+  document.querySelector('#wizardStepLabel').textContent = `Step ${wizardStep} of 4`;
+  document.querySelector('#wizardPercent').textContent = `${wizardStep * 25}%`;
+  document.querySelector('#wizardBar').style.width = `${wizardStep * 25}%`;
+  document.querySelectorAll('.wizard-dots b').forEach((dot, index) => { dot.classList.toggle('active', index + 1 === wizardStep); dot.classList.toggle('done', index + 1 < wizardStep); });
+  if (wizardStep === 4) {
+    const name = document.querySelector('#productName').value || 'Your product';
+    const audience = document.querySelector('#productAudience').value || 'Your customer';
+    const price = Number(document.querySelector('#productPrice').value) || 0;
+    const cost = Number(document.querySelector('#productCost').value) || 0;
+    const contribution = Math.max(0, price - cost - Number((price * .03 + .3).toFixed(2)));
+    document.querySelector('#reviewSummary').innerHTML = `<span><b>Product</b>${escapeHtml(name)}</span><span><b>Customer</b>${escapeHtml(audience)}</span><span><b>Contribution</b>€${contribution.toFixed(2)} before ads</span>`;
+  }
+}
+document.querySelectorAll('.wizard-next').forEach(button => button.addEventListener('click', () => {
+  const current = wizardSteps.find(step => Number(step.dataset.wizardStep) === wizardStep);
+  const fields = [...current.querySelectorAll('input[required], textarea[required]')];
+  if (fields.some(field => !field.checkValidity())) { fields.find(field => !field.checkValidity())?.reportValidity(); return; }
+  wizardStep = Math.min(4, wizardStep + 1); updateWizard();
+}));
+document.querySelectorAll('.wizard-back').forEach(button => button.addEventListener('click', () => { wizardStep = Math.max(1, wizardStep - 1); updateWizard(); }));
 productForm.addEventListener('submit', generateStorefront);
 document.querySelector('#restoreDraft').addEventListener('click', () => {
   const saved = JSON.parse(localStorage.getItem('dropinsta-draft') || 'null');
@@ -134,3 +158,4 @@ document.querySelector('#restoreDraft').addEventListener('click', () => {
   generateStorefront();
 });
 generateStorefront();
+updateWizard();
