@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="operator-stack.css" />
     <link rel="stylesheet" href="launch-loop.css" />
     <link rel="stylesheet" href="walkthrough.css" />
+    <link rel="stylesheet" href="studio.css" />
   </head>
   <body>
     <div class="announcement">Free shipping on orders over €90 <span>•</span> Made for the final impression</div>
@@ -29,13 +30,34 @@
     <main id="top">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">The commerce launch desk</p>
-          <h1>Find it.<br /><em>Source it.</em><br />Launch it.</h1>
-          <p class="hero-text">A practical workspace for finding products people want, sourcing them safely, and launching a storefront that can sell while you sleep.</p>
-          <a class="button button-light" href="#launch-loop">See the launch loop <span>↘</span></a>
+          <p class="eyebrow">The instant storefront builder</p>
+          <h1>Product in.<br /><em>Storefront</em><br />out.</h1>
+          <p class="hero-text">Drop in a product idea and get a conversion-focused store page, offer, and AutoDS sourcing brief in seconds.</p>
+          <a class="button button-light" href="#studio">Build a storefront <span>↘</span></a>
         </div>
         <div class="hero-image"><img src="assets/table-service-hero.png" alt="Table-number roll, loyalty cards and mints on a restaurant table" /></div>
         <div class="hero-stamp"><span>Made for</span><strong>good<br />service</strong><span>since 2024</span></div>
+      </section>
+
+      <section class="studio" id="studio">
+        <div class="studio-heading">
+          <p class="eyebrow">01 / Product studio</p>
+          <h2>Turn a product<br /><em>into a reason to buy.</em></h2>
+          <p>Enter the basics. The page generator turns them into a clear offer, benefit-led copy, trust points, and an AutoDS-ready sourcing handoff.</p>
+        </div>
+        <div class="studio-grid">
+          <form class="studio-form" id="productForm">
+            <label>Product name<input id="productName" required value="Portable Neck Fan" placeholder="e.g. Portable Neck Fan" /></label>
+            <label>Product URL <span class="optional">optional</span><input id="productUrl" type="url" placeholder="Paste an AliExpress or supplier URL" /></label>
+            <label>Who is it for?<input id="productAudience" value="People who want hands-free comfort on hot days" placeholder="Your ideal customer" /></label>
+            <label>What does it help with?<textarea id="productProblem" rows="3">Staying cool while commuting, travelling, or working</textarea></label>
+            <div class="studio-row"><label>Sell price (€)<input id="productPrice" type="number" min="1" value="39" /></label><label>Landed cost (€)<input id="productCost" type="number" min="0" value="11" /></label></div>
+            <label>Store name<input id="storeName" value="Good Ending" /></label>
+            <button class="button button-dark" type="submit">Generate storefront <span>✦</span></button>
+            <p class="form-note">This creates a draft preview. Nothing is published or ordered.</p>
+          </form>
+          <div class="store-preview" id="storePreview" aria-live="polite"></div>
+        </div>
       </section>
 
       <section class="walkthrough" id="walkthrough">
@@ -50,7 +72,7 @@
       </section>
 
       <section class="launch-loop" id="launch-loop">
-        <div><p class="eyebrow">The launch loop</p><h2>From a signal<br />to a <em>storefront.</em></h2></div>
+        <div><p class="eyebrow">02 / The launch loop</p><h2>From a signal<br />to a <em>storefront.</em></h2></div>
         <div class="loop-steps"><article><span>01</span><h3>Find</h3><p>Use trend, competitor, store and ad signals to choose a product with a real pain point and a delivery gap.</p></article><article><span>02</span><h3>Source</h3><p>Vet suppliers, calculate landed contribution, request samples, then import into AutoDS as a draft.</p></article><article><span>03</span><h3>Launch</h3><p>Use Atlas to shape the page, Shopify to run the store, and agentic-ready data to get discovered.</p></article></div>
       </section>
 

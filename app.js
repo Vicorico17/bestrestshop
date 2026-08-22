@@ -80,3 +80,41 @@ function renderSourceLab(){
   document.querySelector('#saveBrief').addEventListener('click',e=>{e.target.textContent='Brief saved ✓';});
 }
 renderSourceLab();
+
+// Product studio: a local, instant draft generator. The adapter shape is ready
+// for a server-side product importer/AutoDS connector when credentials exist.
+const productForm = document.querySelector('#productForm');
+const storePreview = document.querySelector('#storePreview');
+const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[character]));
+const titleCase = value => value.replace(/\w+/g, word => word[0].toUpperCase() + word.slice(1));
+
+function generateStorefront(event){
+  event?.preventDefault();
+  const name = document.querySelector('#productName').value.trim() || 'Your product';
+  const url = document.querySelector('#productUrl').value.trim();
+  const audience = document.querySelector('#productAudience').value.trim() || 'People who want a simpler everyday routine';
+  const problem = document.querySelector('#productProblem').value.trim() || 'Making an everyday task easier';
+  const price = Math.max(1, Number(document.querySelector('#productPrice').value) || 39);
+  const cost = Math.max(0, Number(document.querySelector('#productCost').value) || 0);
+  const store = document.querySelector('#storeName').value.trim() || 'Your new store';
+  const contribution = Math.max(0, price - cost - Number((price * .03 + .3).toFixed(2)));
+  const productTitle = titleCase(name);
+  const words = productTitle.split(' ').filter(Boolean);
+  const shortHook = words.length > 3 ? `${words.slice(0, 3).join(' ')} that fits your day` : `${productTitle} made simple`;
+  const slug = productTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const sourceState = url ? 'Supplier URL captured' : 'Supplier URL needed';
+
+  storePreview.innerHTML = `<div class="preview-toolbar"><span><i></i> Draft storefront generated</span><button type="button" class="preview-copy" id="copyStorefront">Copy page brief</button></div>
+    <div class="preview-page" data-copy="${escapeHtml(`${productTitle}\n${shortHook}\nFor: ${audience}\nSolves: ${problem}\nPrice: €${price}.00\nAutoDS route: ${url || 'supplier URL required'}`)}">
+      <div class="preview-nav"><strong>${escapeHtml(store)}</strong><span>Shop · Reviews · <b>Cart (0)</b></span></div>
+      <div class="preview-hero"><div class="preview-art"><span>${escapeHtml(words[0] || 'NEW')}</span><small>your product</small></div><div class="preview-copy"><p class="eyebrow">Made for ${escapeHtml(audience.toLowerCase())}</p><h3>${escapeHtml(productTitle)}</h3><p>${escapeHtml(shortHook)}. Designed around the moment your customer needs it most: ${escapeHtml(problem.toLowerCase())}.</p><div class="preview-proof"><span>★★★★★</span> 4.8 · 127 early customers</div><div class="preview-buy"><strong>€${price}.00</strong><button type="button">Add to cart ↗</button></div><small class="preview-shipping">Free shipping · 30-day returns · Secure checkout</small></div></div>
+      <div class="preview-benefits"><span>01 <b>Useful by design</b><small>Built around a real customer moment.</small></span><span>02 <b>Fast to understand</b><small>Clear benefits above the fold.</small></span><span>03 <b>Easy to try</b><small>Low-friction offer and reassurance.</small></span></div>
+    </div>
+    <div class="handoff"><div><p class="eyebrow">AutoDS handoff</p><strong>${escapeHtml(sourceState)}</strong><p>${url ? 'The product is ready to be reviewed for import as a draft.' : 'Paste a supplier URL to prepare the import brief. Product claims and shipping still need verification.'}</p></div><span class="cash-status ${contribution > 0 ? 'pass' : 'hold'}">€${contribution.toFixed(2)} before ads</span></div>`;
+  document.querySelector('#copyStorefront').addEventListener('click', async event => {
+    await navigator.clipboard?.writeText(document.querySelector('.preview-page').dataset.copy);
+    event.target.textContent = 'Copied ✓';
+  });
+}
+productForm.addEventListener('submit', generateStorefront);
+generateStorefront();
