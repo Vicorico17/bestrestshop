@@ -1,6 +1,6 @@
 const productData = [
   { id: 'numbers-roll', category: 'paper', name: 'Numbers roll', note: '100 custom table numbers', price: 18, graphic: '<div class="roll"></div>' },
-  { id: 'loyalty-card', category: 'paper', name: 'Loyalty card', note: '100 loyalty cards, uncoated', price: 24, graphic: '<div class="card-stack">good ending</div>' },
+  { id: 'loyalty-card', category: 'paper', name: 'Loyalty card', note: '100 loyalty cards, uncoated', price: 24, graphic: '<div class="card-stack">dropinsta</div>' },
   { id: 'mint', category: 'treats', name: 'Mint', note: 'A jar of 80 peppermint mints', price: 16, graphic: '<div class="mints"><span class="mint">mint</span><span class="mint">mint</span><span class="mint">mint</span></div>' },
   { id: 'sweets', category: 'treats', name: 'Sweets', note: 'A jar of 80 bright little sweets', price: 16, graphic: '<div class="mints" style="filter:hue-rotate(45deg)"><span class="mint">sweet</span><span class="mint">sweet</span><span class="mint">sweet</span></div>' },
   { id: 'cash-registry', category: 'counter', name: 'Cash registry', note: 'A satisfyingly solid cash machine', price: 289, graphic: '<div class="till"><div class="till-screen">€ 24.00</div><div class="till-keys"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>' },
@@ -97,18 +97,25 @@ function generateStorefront(event){
   const price = Math.max(1, Number(document.querySelector('#productPrice').value) || 39);
   const cost = Math.max(0, Number(document.querySelector('#productCost').value) || 0);
   const store = document.querySelector('#storeName').value.trim() || 'Your new store';
+  const style = document.querySelector('#storeStyle').value;
+  const launchOffer = document.querySelector('#launchOffer').checked;
   const contribution = Math.max(0, price - cost - Number((price * .03 + .3).toFixed(2)));
   const productTitle = titleCase(name);
   const words = productTitle.split(' ').filter(Boolean);
   const shortHook = words.length > 3 ? `${words.slice(0, 3).join(' ')} that fits your day` : `${productTitle} made simple`;
-  const slug = productTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const sourceState = url ? 'Supplier URL captured' : 'Supplier URL needed';
+  const score = [name, url, audience, problem, price, cost].filter(Boolean).length;
+  const offer = launchOffer ? `Launch offer · 20% off with code DROP20` : 'Standard offer · no discount claims';
+  const draft = {name,url,audience,problem,price,cost,store,style,launchOffer};
+  localStorage.setItem('dropinsta-draft', JSON.stringify(draft));
 
-  storePreview.innerHTML = `<div class="preview-toolbar"><span><i></i> Draft storefront generated</span><button type="button" class="preview-copy" id="copyStorefront">Copy page brief</button></div>
+  storePreview.innerHTML = `<div class="preview-toolbar"><span><i></i> Draft storefront generated · ${score}/6 inputs ready</span><button type="button" class="preview-copy-button" id="copyStorefront">Copy page brief</button></div>
     <div class="preview-page" data-copy="${escapeHtml(`${productTitle}\n${shortHook}\nFor: ${audience}\nSolves: ${problem}\nPrice: €${price}.00\nAutoDS route: ${url || 'supplier URL required'}`)}">
       <div class="preview-nav"><strong>${escapeHtml(store)}</strong><span>Shop · Reviews · <b>Cart (0)</b></span></div>
-      <div class="preview-hero"><div class="preview-art"><span>${escapeHtml(words[0] || 'NEW')}</span><small>your product</small></div><div class="preview-copy"><p class="eyebrow">Made for ${escapeHtml(audience.toLowerCase())}</p><h3>${escapeHtml(productTitle)}</h3><p>${escapeHtml(shortHook)}. Designed around the moment your customer needs it most: ${escapeHtml(problem.toLowerCase())}.</p><div class="preview-proof"><span>★★★★★</span> 4.8 · 127 early customers</div><div class="preview-buy"><strong>€${price}.00</strong><button type="button">Add to cart ↗</button></div><small class="preview-shipping">Free shipping · 30-day returns · Secure checkout</small></div></div>
-      <div class="preview-benefits"><span>01 <b>Useful by design</b><small>Built around a real customer moment.</small></span><span>02 <b>Fast to understand</b><small>Clear benefits above the fold.</small></span><span>03 <b>Easy to try</b><small>Low-friction offer and reassurance.</small></span></div>
+      <div class="preview-offer">${escapeHtml(offer)}</div>
+      <div class="preview-hero preview-${style}"><div class="preview-art"><span>${escapeHtml(words[0] || 'NEW')}</span><small>product image needed</small></div><div class="preview-copy"><p class="eyebrow">Made for ${escapeHtml(audience.toLowerCase())}</p><h3>${escapeHtml(productTitle)}</h3><p>${escapeHtml(shortHook)}. Designed around the moment your customer needs it most: ${escapeHtml(problem.toLowerCase())}.</p><div class="preview-proof"><span>★★★★★</span> Social proof placeholder · verify before launch</div><div class="preview-buy"><strong>€${price}.00</strong><button type="button">Add to cart ↗</button></div><small class="preview-shipping">Shipping promise needed · 30-day returns · Secure checkout</small></div></div>
+      <div class="preview-benefits"><span>01 <b>Useful by design</b><small>Built around a real customer moment.</small></span><span>02 <b>Fast to understand</b><small>Clear benefits above the fold.</small></span><span>03 <b>Easy to try</b><small>${escapeHtml(offer)}</small></span></div>
+      <div class="preview-faq"><strong>Common questions</strong><span>How does it work?　＋</span><span>When will it arrive?　＋</span><span>What if it is not right for me?　＋</span></div>
     </div>
     <div class="handoff"><div><p class="eyebrow">AutoDS handoff</p><strong>${escapeHtml(sourceState)}</strong><p>${url ? 'The product is ready to be reviewed for import as a draft.' : 'Paste a supplier URL to prepare the import brief. Product claims and shipping still need verification.'}</p></div><span class="cash-status ${contribution > 0 ? 'pass' : 'hold'}">€${contribution.toFixed(2)} before ads</span></div>`;
   document.querySelector('#copyStorefront').addEventListener('click', async event => {
@@ -117,4 +124,13 @@ function generateStorefront(event){
   });
 }
 productForm.addEventListener('submit', generateStorefront);
+document.querySelector('#restoreDraft').addEventListener('click', () => {
+  const saved = JSON.parse(localStorage.getItem('dropinsta-draft') || 'null');
+  if (!saved) return;
+  Object.entries(saved).forEach(([key, value]) => {
+    const field = document.querySelector(`#${key === 'name' ? 'productName' : key === 'url' ? 'productUrl' : key === 'audience' ? 'productAudience' : key === 'problem' ? 'productProblem' : key === 'price' ? 'productPrice' : key === 'cost' ? 'productCost' : key === 'store' ? 'storeName' : key === 'style' ? 'storeStyle' : key === 'launchOffer' ? 'launchOffer' : ''}`);
+    if (field) field.type === 'checkbox' ? field.checked = value : field.value = value;
+  });
+  generateStorefront();
+});
 generateStorefront();
